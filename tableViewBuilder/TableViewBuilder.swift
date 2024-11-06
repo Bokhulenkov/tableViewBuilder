@@ -29,7 +29,7 @@ final class TableViewBuilder: NSObject {
         super.init()
         setDelegate()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.reuseIdentifier)
     }
     
     // MARK: - Methods
@@ -53,12 +53,14 @@ extension TableViewBuilder: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.backgroundColor = .systemPink
-        cell.textLabel?.text = "simle number \(simpleNumberArray[indexPath.row])"
+        let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.reuseIdentifier, for: indexPath) as! TableViewCellModel
+//        cell.backgroundColor = .systemPink
+//        var listConfiguration = cell.defaultContentConfiguration()
+//        listConfiguration.text = "simle number \(simpleNumberArray[indexPath.row])"
+//        cell.contentConfiguration = listConfiguration
         return cell
     }
-    
+     
     
 }
 
