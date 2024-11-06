@@ -8,15 +8,36 @@
 import UIKit
 
 final class TableViewBuilder: NSObject {
+    
     var tableView = UITableView()
     let sections: [Int] = []
+    
+    
+    let simpleNumberArray: [Int] = {
+        var array = [Int]()
+        for _ in 1...25 {
+            let numbers = 5...100
+            array.append(numbers.randomElement()!)
+        }
+        return array
+    }()
+    
     
     // MARK: - Init
     init(tableView: UITableView) {
         self.tableView = tableView
         super.init()
+        setDelegate()
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
+    // MARK: - Methods
+    
+    private func setDelegate() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
     
 }
 
@@ -28,13 +49,14 @@ extension TableViewBuilder: UITableViewDelegate {
 
 extension TableViewBuilder: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.sections.count
+        simpleNumberArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.backgroundColor = .systemPink
+        cell.textLabel?.text = "simle number \(simpleNumberArray[indexPath.row])"
+        return cell
     }
     
     
@@ -42,7 +64,7 @@ extension TableViewBuilder: UITableViewDataSource {
 
 /*
  
- Реализовать класс, который позволяет конструировать таблицу из кода в декларативном стиле.**Пример использования**: есть экран, на котором имеется **UITableView**. Создаем инстанс класса, например:
+есть экран, на котором имеется **UITableView**. Создаем инстанс класса, например:
 
  ```swift
  ***self.tableViewBuilder = TableViewBuilder(tableView: self.tableView)***
@@ -53,5 +75,20 @@ extension TableViewBuilder: UITableViewDataSource {
  ***let cellModel = TableViewCellModel(identifier: “customIdentifier”)cellModel.onFill = { ... }***
 
  Также возможность обработать тап по ячейке – также вызывать соответствующую closure (например onSelect).
+
+ ```swift
+ ***cellModel.*onSelect *= { ... }***
+ ```
+
+ Пример секции:
+
+ ```swift
+ ***let sectionModel = TableViewSectionModel(cells: [cellModel])
+ sectionModel.header = TableViewHeaderModel(...)
+ self.tableViewBuilder.sections = [sectionModel]**
+  // в этот момент можно вызвать например **reloadData**.*
+ ```
+
+ Т.е. пусть таблица обновляет представление тогда, когда мы переустанавливаем модели секций. Создать какой-нибудь тестовый экран с разными ячейками и любым наполнением, используя декларативный подход и наш новый класс. При выполнении задания нужно построить работу с помощью **gitFlow**.
  
  */
