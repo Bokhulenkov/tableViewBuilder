@@ -10,6 +10,7 @@ import UIKit
 final class TableViewBuilder: NSObject {
     
     var tableView = UITableView()
+    var closures: ()->Void
     let sections: [Int] = []
     
     
@@ -24,12 +25,13 @@ final class TableViewBuilder: NSObject {
     
     
     // MARK: - Init
-    init(tableView: UITableView) {
+    init(tableView: UITableView, closures: @escaping ()->Void) {
         self.tableView = tableView
+        self.closures = closures
         super.init()
         setDelegate()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.reuseIdentifier)
+        tableView.register(TableViewCellModel.self, forCellReuseIdentifier: UITableViewCell.reuseIdentifier)
     }
     
     // MARK: - Methods
@@ -44,7 +46,9 @@ final class TableViewBuilder: NSObject {
 // MARK: - Extensions
 
 extension TableViewBuilder: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Select row index \(indexPath.row)")
+    }
 }
 
 extension TableViewBuilder: UITableViewDataSource {
@@ -54,6 +58,7 @@ extension TableViewBuilder: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.reuseIdentifier, for: indexPath) as! TableViewCellModel
+        cell.configureCell(closures)
 //        cell.backgroundColor = .systemPink
 //        var listConfiguration = cell.defaultContentConfiguration()
 //        listConfiguration.text = "simle number \(simpleNumberArray[indexPath.row])"

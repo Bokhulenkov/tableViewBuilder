@@ -18,7 +18,7 @@ final class TableViewCellModel: UITableViewCell {
     
     // MARK: - Methods
     
-    func configureCell() {
+    func configureCell(_: ()->Void) {
         
     }
 }

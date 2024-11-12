@@ -14,6 +14,10 @@ class ViewController: UIViewController {
     let tableView = UITableView()
     var tableViewBuilder: TableViewBuilder?
     
+    let closure: ()->Void = { 
+    print("test")
+    } 
+    
     
     // MARK: - LifeCycle
     
@@ -23,7 +27,7 @@ class ViewController: UIViewController {
         
         view.addSubview(tableView)
         setConstraints()
-        tableViewBuilder = TableViewBuilder(tableView: tableView)
+        tableViewBuilder = TableViewBuilder(tableView: tableView, closures: closure)
         
     }
 
