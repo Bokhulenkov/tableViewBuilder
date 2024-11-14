@@ -14,11 +14,6 @@ class ViewController: UIViewController {
     let tableView = UITableView()
     var tableViewBuilder: TableViewBuilder?
     
-    let closure: ()->Void = { 
-    print("test")
-    } 
-    
-    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -27,7 +22,16 @@ class ViewController: UIViewController {
         
         view.addSubview(tableView)
         setConstraints()
-        tableViewBuilder = TableViewBuilder(tableView: tableView, closures: closure)
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "test")
+        
+        tableViewBuilder = TableViewBuilder(tableView: tableView)
+        let cell = TableViewCellModel(identifier: "test")
+        cell.onFill = { cell in
+            var config = cell.defaultContentConfiguration()
+            config.text = "this is cell with id test"
+            cell.contentConfiguration = config
+        }
         
     }
 

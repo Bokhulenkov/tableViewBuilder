@@ -7,26 +7,23 @@
 
 import UIKit
 
-final class TableViewCellModel: UITableViewCell {
+final class TableViewCellModel {
     
+    let identifier: String
+    var onFill: ((UITableViewCell) -> Void)?
+    var onSelect: (()->Void)?
     
-        
     // MARK: - init
     
-    
-        
-    
-    // MARK: - Methods
-    
-    func configureCell(_: ()->Void) {
-        
+    init(identifier: String) {
+        self.identifier = identifier
     }
 }
 
 // MARK: - Extensions
 
-extension UITableViewCell {
-    static var reuseIdentifier: String {
-        return String(describing: self)
-    }
-}
+//extension UITableViewCell {
+//    static var reuseIdentifier: String {
+//        return String(describing: self)
+//    }
+//}
